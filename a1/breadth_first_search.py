@@ -16,8 +16,8 @@ def breadth_first_search(problem):
     frontier = [] # Queue: Append to end, Extract from 0th index
     explored = []
     init = Node(None,problem.init_state,None,0)
-    if type(problem.init_state) is list:
-        init.state = problem.init_state[0]
+    if type(init.state) is list:
+        init.state = init.state[0]
     init_neighbours = problem.neighbours[init.state]
 
     if init_state == problem.goal_states[0]:
@@ -27,6 +27,7 @@ def breadth_first_search(problem):
         frontier.append(temp)
     while len(frontier) != 0:
         node = frontier.pop(0)
+        # print(node.state)
         explored.append(node)
         for i in problem.get_actions(node.state):
             child = problem.get_child_node(node, i)
@@ -74,6 +75,14 @@ if __name__ == '__main__':
     goal_states = [349]
     init_state = [0]
     problem = GraphSearchProblem(goal_states, init_state, V, E)
+    path, num_nodes_expanded, max_frontier_size = breadth_first_search(problem)
+    correct = problem.check_graph_solution(path)
+    print("Solution is correct: {:}".format(correct))
+    print(path)
+
+    E_twitter = np.load('twitter_edges_project_01.npy')
+    V_twitter = np.unique(E_twitter)
+    problem = GraphSearchProblem([59999], 0, V_twitter, E_twitter)
     path, num_nodes_expanded, max_frontier_size = breadth_first_search(problem)
     correct = problem.check_graph_solution(path)
     print("Solution is correct: {:}".format(correct))
