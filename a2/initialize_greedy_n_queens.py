@@ -10,6 +10,7 @@ def initialize_greedy_n_queens(N: int) -> list:
     algorithm's performance!
 
     Example:
+
     Input N = 4 might produce greedy_init = np.array([0, 3, 1, 2]), which represents the following "chessboard":
 
      _ _ _ _
@@ -30,12 +31,32 @@ def initialize_greedy_n_queens(N: int) -> list:
     greedy_init = np.zeros(N)
     # First queen goes in a random spot
     greedy_init[0] = np.random.randint(0, N)
-
-    ### YOUR CODE GOES HERE
+    col = {}
+    for i in range(N):
+        col[i] = 0
+    col[greedy_init[0]] = 1
+    for c in range(1,N):
+        print("Column:",col)
+        for i in range(c):
+            if greedy_init[i]+c < N:
+                col[greedy_init[i]+(c-i)] += 1
+                if c > 0:
+                    col[greedy_init[i]+(c-i)-1] -= 1
+            if greedy_init[i]-c >= 0:
+                col[greedy_init[i]-(c-i)] += 1
+                if c > 0:
+                    col[greedy_init[i]-(c-i)+1] -= 1
+        min_idx = []
+        min_conf = min(col, key=col.get)
+        print(min_conf)
+        for key, value in col.items():
+            if value ==  min_conf:
+                min_idx.append(key)
+        print(min_idx)
 
     return greedy_init
 
 
 if __name__ == '__main__':
-    # You can test your code here
+    initialize_greedy_n_queens(5)
     pass
